@@ -1,0 +1,134 @@
+{
+    "Stats": [
+        {
+            "StatName": "Strength",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Dexterity",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Agility",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Constitution",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Perception",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Will",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Intelligence",
+            "StatValue": 5
+        }
+    ],
+    "Skills": [
+        {
+            "SkillName": "Guns",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Throwing",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Crossbows",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Melee",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Dodge",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Evasion",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Stealth",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Hacking",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Lockpicking",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Pickpocketing",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Traps",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Mechanics",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Temporal Manipulation",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Persuasion",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Intimidation",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Mercantile",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Metathermics",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Psychokinesis",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Thought Control",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Tailoring",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Biology",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Chemistry",
+            "SkillValue": 5
+        },
+        {
+            "SkillName": "Electronics",
+            "SkillValue": 5
+        }
+    ],
+    "Character_Type": null,
+    "Feats": [
+        "Strafe",
+        "Sure Step",
+        "Conditioning",
+        "Versatility",
+        "Telekinetic Undulation"
+    ]
+}

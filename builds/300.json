@@ -1,0 +1,179 @@
+{
+    "Stats": [
+        {
+            "StatName": "Strength",
+            "StatValue": 16
+        },
+        {
+            "StatName": "Dexterity",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Agility",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Constitution",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Perception",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Will",
+            "StatValue": 5
+        },
+        {
+            "StatName": "Intelligence",
+            "StatValue": 5
+        }
+    ],
+    "Skills": [
+        {
+            "SkillName": "Guns",
+            "SkillValue": 160
+        },
+        {
+            "SkillName": "Throwing",
+            "SkillValue": 160
+        },
+        {
+            "SkillName": "Crossbows",
+            "SkillValue": 160
+        },
+        {
+            "SkillName": "Melee",
+            "SkillValue": 160
+        },
+        {
+            "SkillName": "Dodge",
+            "SkillValue": 160
+        },
+        {
+            "SkillName": "Evasion",
+            "SkillValue": 160
+        },
+        {
+            "SkillName": "Stealth",
+            "SkillValue": 160
+        },
+        {
+            "SkillName": "Hacking",
+            "SkillValue": 160
+        },
+        {
+            "SkillName": "Lockpicking",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Pickpocketing",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Traps",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Mechanics",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Temporal Manipulation",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Persuasion",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Intimidation",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Mercantile",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Metathermics",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Psychokinesis",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Thought Control",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Tailoring",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Biology",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Chemistry",
+            "SkillValue": 0
+        },
+        {
+            "SkillName": "Electronics",
+            "SkillValue": 0
+        }
+    ],
+    "Character_Type": null,
+    "Feats": [
+        "Fend",
+        "Strafe",
+        "Sure Step",
+        "Conditioning",
+        "Demolition Man",
+        "Concussive Shots",
+        "Critical Power",
+        "Elemental Bolts",
+        "Marksman",
+        "Leading Shot",
+        "Spear Guardian",
+        "Spear Throw",
+        "Barrel Stare",
+        "Blindsiding",
+        "Boarding Up",
+        "Decapitate",
+        "Impale",
+        "Iron Grip",
+        "Onslaught",
+        "Pellet Mayhem",
+        "Perfect Scattering",
+        "Shield Arm",
+        "Shield Bash",
+        "Shooting Spree",
+        "Sixth Shell",
+        "Commando",
+        "Execute",
+        "Full-Auto",
+        "Gun-Fu",
+        "High-Technicalities",
+        "Rapid Fire",
+        "Expose Weakness",
+        "Versatility",
+        "Jet 'n' Jab",
+        "Naval Jousting",
+        "Bone Breaker",
+        "Crippling Strike",
+        "Dirty Kick",
+        "Expert Unarmed Combat",
+        "Guard (feat)",
+        "Heavy Punch",
+        "Heavyweight",
+        "Improved Unarmed Combat",
+        "Pummel",
+        "Super Slam",
+        "Taste for Blood",
+        "Wrestling",
+        "Corporeal Projection",
+        "Telekinetic Undulation",
+        "Body Weight Training"
+    ]
+}

@@ -5,38 +5,65 @@ import (
 	"fmt"
 	"main/calc"
 	"os"
+
 	"strconv"
 )
 
 type Templates struct {
 	Stats []string
 	Skills []string
+	Types []string
 }
 
 func main(){
 	var err error
-	var output string
 	var feats []string
 	input_data := calculation.InputData{}
+	
+	var type_choice string
+	var choice_selected bool = false
+	for (choice_selected != true){
+		fmt.Println("Add build type filtering?", " ", "(y/n)")
+		fmt.Scanln(&type_choice)
+
+		if type_choice == "y" || type_choice == "n" {
+			choice_selected = true
+		}
+	}
 	
 	skill_limiter := 0
 	stat_limiter := 35
 
 	tmpl := generate_templates()
 	
-	err, output = take_stat_input(tmpl.Stats, &input_data, &stat_limiter)
-	if err != nil || output == "Incomplete" {
+	err = take_stat_input(tmpl.Stats, &input_data, &stat_limiter)
+	if err != nil {
 		return
 	}
-	err, output = take_skill_input(tmpl.Skills, &input_data, &skill_limiter)
-	if err != nil || output == "Incomplete" {
+	err = take_skill_input(tmpl.Skills, &input_data, &skill_limiter)
+	if err != nil {
 		return
+	}
+	print_values(input_data)
+	var choice string
+	choice_selected = false
+	for (choice_selected != true){
+		fmt.Println("Begin calculation?", " ", "(y/n)")
+		fmt.Scanln(&choice)
+
+		if choice == "y"{
+			choice_selected = true
+		}
 	}
 
 	feats, err = calculation.Prepare_Data(input_data)
 	fmt.Println(feats)
-
-	feats_json, error := json.MarshalIndent(feats, "", "    ")
+	
+	for f := 0; f < len(feats); f++ {
+		input_data.Feats = append(input_data.Feats, feats[f])
+	}
+	
+	feats_json, error := json.MarshalIndent(input_data, "", "    ")
 	if error != nil{
 		return
 	}
@@ -56,27 +83,42 @@ func main(){
 }
 
 
-func take_stat_input (stat_slice []string, input_data *calculation.InputData, stat_limiter *int) (error, string) {
+func take_stat_input (stat_slice []string, input_data *calculation.InputData, stat_limiter *int) error {
 	
 	for i := 0; i < len(stat_slice); i++ {
+		fmt.Println("-----------------------------------------------")
+		fmt.Println()
 		stat := stat_slice[i]
+		choice_selected := false
 		var val string
-		fmt.Println("Enter value for: ", stat)
-		_, err := fmt.Scanln(&val)
-		if err != nil {
-			return err, ""
-		}
+		var val_as_int int
+		for (choice_selected != true){
+
+			fmt.Println("Enter value for: ", stat)
+			_, err := fmt.Scanln(&val)
+			if err != nil {
+				fmt.Println("Failed to read input..")
+			}
 		
-		val_as_int, err := strconv.Atoi(val)
-		if err != nil {
-			return err, ""
+			int_stat_val, err := strconv.Atoi(val)
+			if err != nil {
+				fmt.Println("Integer conversion failed")
+			}
+
+			if err == nil {
+				val_as_int = int_stat_val
+				choice_selected = true
+			}
 		}
 	
 		if val_as_int > 20 {
 			val_as_int = 20
 		}
-		fmt.Println("chosen val: ", stat, "->" ,val_as_int)
 
+		if val_as_int < 3 {
+			val_as_int = 3
+		}
+		fmt.Println("chosen val: ", stat, "->" ,val_as_int)
 		if val_as_int < 5 && val_as_int >= 3 {
 			*stat_limiter -= (5 - val_as_int) 
 		} else if val_as_int > 5 && val_as_int <= 20 {	
@@ -86,11 +128,8 @@ func take_stat_input (stat_slice []string, input_data *calculation.InputData, st
 		if val_as_int == 5 {
 			*stat_limiter += 0
 		}
-
-
-		fmt.Println("Stat point counter: ", *stat_limiter, "/46")
 	
-		if val_as_int > 3 && val_as_int <= 20 && *stat_limiter < 46{
+		if val_as_int > 3 && val_as_int <= 20 && *stat_limiter <= 46{
 			stat_data := calculation.Stat{
 				StatName: stat,
 				StatValue: val_as_int,
@@ -98,29 +137,74 @@ func take_stat_input (stat_slice []string, input_data *calculation.InputData, st
 
 			input_data.Stats = append(input_data.Stats, stat_data)
 		} 
-		
-		if *stat_limiter > 46 {
-			fmt.Println("All stat points used before completing allocations, try again..")
-			return nil,"Incomplete"
-		}
-	} 
 
-	return nil, ""
+
+		if *stat_limiter <= 46 {
+			fmt.Println("Stat point counter: ", *stat_limiter, "/46")	
+		}
+
+		if *stat_limiter > 46 {
+			overlimit := (*stat_limiter - 46)
+			val_as_int = (val_as_int - overlimit)
+			*stat_limiter -= overlimit
+			fmt.Println("Stat point counter: ", *stat_limiter, "/46")
+			fmt.Println("All stat points used before completing allocations, assigning base value 5 to remaining stats.")
+			stat_data := calculation.Stat {
+				StatName: stat,
+				StatValue: val_as_int,
+			}
+			input_data.Stats = append(input_data.Stats, stat_data)
+			remainder := i+1
+			assign_remaining_stats(remainder, stat_slice, input_data)
+			fmt.Println()
+			fmt.Println("-----------------------------------------------")
+			return nil
+		}
+		fmt.Println()
+		fmt.Println("-----------------------------------------------")
+	}
+	return nil
 }
 
-func take_skill_input(skill_slice []string, input_data *calculation.InputData, skill_limiter *int) (error, string) {
-	for i := 0; i < len(skill_slice); i++ {
-		skill := skill_slice[i]
-		var val string
-		fmt.Println("Enter value for: ", skill)
-		_, err := fmt.Scanln(&val)
-		if err != nil {
-			return err, ""
+
+
+func assign_remaining_stats(RI int, slice []string, input_data *calculation.InputData) {
+	for r := RI; r < len(slice); r++ {
+		stat := slice[r]
+		stat_data := calculation.Stat {
+			StatName: stat,
+			StatValue: 5,
 		}
-		
-		val_as_int, err := strconv.Atoi(val)
-		if err != nil {
-			return err, ""
+		input_data.Stats = append(input_data.Stats, stat_data)
+	}
+}
+
+func take_skill_input(skill_slice []string, input_data *calculation.InputData, skill_limiter *int) error {
+	for i := 0; i < len(skill_slice); i++ {
+		fmt.Println("-----------------------------------------------")
+		fmt.Println()
+		skill := skill_slice[i]
+		choice_selected := false
+		var val string
+		var val_as_int int
+
+		for(choice_selected != true){
+
+			fmt.Println("Enter value for: ", skill)
+			_, err := fmt.Scanln(&val)
+			if err != nil {
+				return err
+			}
+			
+			int_skill_var, err := strconv.Atoi(val)
+			if err != nil {
+				return err
+			}
+
+			if err == nil {
+				val_as_int = int_skill_var
+				choice_selected = true
+			}
 		}
 		fmt.Println("chosen value: ", skill, "->", val_as_int)
 	
@@ -132,9 +216,10 @@ func take_skill_input(skill_slice []string, input_data *calculation.InputData, s
 			*skill_limiter += val_as_int
 		}
 	
-		fmt.Println("Skill point counter: ", *skill_limiter, "/1280")
 
-		if val_as_int > 0 && val_as_int <= 160 && *skill_limiter < 1280 {
+
+		if val_as_int > 0 && val_as_int <= 160 && *skill_limiter <= 1280 {
+			fmt.Println("Skill point counter: ", *skill_limiter, "/1280")
 			skill_data := calculation.Skill{
 				SkillName: skill,
 				SkillValue: val_as_int,
@@ -144,10 +229,38 @@ func take_skill_input(skill_slice []string, input_data *calculation.InputData, s
 
 		if *skill_limiter > 1280 {
 			fmt.Println("All skill points used, assigning selected values")
-			return nil, ""
+
+			overlimit := (*skill_limiter - 1280)
+			val_as_int = (val_as_int - overlimit)
+			*skill_limiter -= overlimit
+
+			skill_data := calculation.Skill {
+				SkillName: skill,
+				SkillValue: val_as_int,
+			}
+			input_data.Skills = append(input_data.Skills, skill_data)
+			remainder := i+1
+			fmt.Println("Skill point counter: ", *skill_limiter, "/1280")
+			assign_remaining_skills(remainder, skill_slice, input_data)
+			fmt.Println()
+			fmt.Println("-----------------------------------------------")
+			return nil
 		}
+		fmt.Println()
+		fmt.Println("-----------------------------------------------")
 	}
-	return nil, ""
+	return nil
+}
+
+func assign_remaining_skills(RI int, slice []string, input_data *calculation.InputData){
+	for r := RI; r < len(slice); r++ {
+		skill := slice[r]
+		skill_data := calculation.Skill {
+			SkillName: skill,
+			SkillValue: 0,
+		}
+		input_data.Skills = append(input_data.Skills, skill_data)
+	}
 }
 
 func generate_templates() Templates {
@@ -168,4 +281,35 @@ func generate_templates() Templates {
 	}
 
 	return tmpl
+}
+
+
+
+func print_values (input_data calculation.InputData) {
+
+
+	var concat_stat_item string
+	var concat_skill_item string
+	fmt.Println("--------------------------------------------------")
+	fmt.Println()
+	for i := 0; i < len(input_data.Stats); i++ {
+		item := input_data.Stats[i]
+		item_num := strconv.Itoa(item.StatValue)
+		concat_stat_item += item.StatName + "-->" + item_num + ", "
+	}
+
+	fmt.Println("STATS: ")
+	fmt.Println(concat_stat_item)
+	fmt.Println()
+
+	for s := 0; s < len(input_data.Skills); s++ {
+		item := input_data.Skills[s]
+		item_num := strconv.Itoa(item.SkillValue)
+		concat_skill_item += item.SkillName + "--> " + item_num + ", "
+	}
+
+	fmt.Println("SKILLS: ")
+	fmt.Println(concat_skill_item)
+	fmt.Println()
+	fmt.Println("--------------------------------------------------")
 }

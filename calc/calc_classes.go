@@ -14,6 +14,7 @@ type InputData struct {
 	Stats          []Stat 
 	Skills         []Skill 
 	Character_Type []string 
+	Feats	[]string
 }
 
 type Skills_Tracker struct {
